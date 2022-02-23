@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import './App.css'
 
-const DEFAULT_QUERY = 'redux'
+const DEFAULT_QUERY = ''
 const DEFAULT_HPP = '100'
 
 const PATH_BASE = 'https://hn.algolia.com/api/v1'
@@ -27,6 +27,7 @@ class App extends Component {
     this.onSearchChange = this.onSearchChange.bind(this)
     this.onSearchSubmit = this.onSearchSubmit.bind(this)
     this.onDismiss = this.onDismiss.bind(this)
+    this.showResults = this.showResults.bind(this)
   }
 
   needsToSearchTopStories(searchTerm) {
@@ -34,7 +35,7 @@ class App extends Component {
   }
 
   setSearchTopStories (result) {
-    console.log('111', result)
+    // console.log('111', result)
     const { hits, page } = result
     const { searchKey, results } = this.state
 
@@ -98,6 +99,12 @@ class App extends Component {
     })
   }
 
+  showResults () {
+    const { results } = this.state
+    console.log(results)
+    alert(Object.keys(results).filter(item => item !== '').join('\n'))
+  }
+
   render () {
     // console.log(this.state)
     const {
@@ -119,8 +126,8 @@ class App extends Component {
       results[searchKey].hits
     ) || []
 
-    console.log(searchTerm, results, searchKey, error)
-    console.log(page, list)
+    // console.log(searchTerm, results, searchKey, error)
+    // console.log(page, list)
 
     return (
       <div className="page">
@@ -129,8 +136,9 @@ class App extends Component {
             value={searchTerm}
             onChange={this.onSearchChange}
             onSubmit={this.onSearchSubmit}
+            showResults={this.showResults}
           >
-            Search
+            搜索
           </Search>
         </div>
 
@@ -146,7 +154,7 @@ class App extends Component {
 
         <div className="interactions">
           <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-            More
+            更多
           </Button>
         </div>
       </div>
@@ -155,16 +163,18 @@ class App extends Component {
 }
 
 // 使用箭头函数优化
-const Search = ({ value, onChange, onSubmit, children }) =>
+const Search = ({ value, onChange, onSubmit, children, showResults }) =>
   <form onSubmit={onSubmit}>
     <input
       type="text"
       value={value}
       onChange={onChange}
+      placeholder="请输入内容"
     />
     <button type="submit">
       {children}
     </button>
+    <button className="records" onClick={showResults}>历史记录</button>
   </form>
 
 
@@ -182,7 +192,7 @@ const Table = ({ list, onDismiss }) =>
           <Button onClick={() => onDismiss(item.objectID)}
             className="button-inline"
           >
-            Dismiss
+            dismiss
           </Button>
         </span>
       </div>
