@@ -130,7 +130,7 @@ class App extends Component {
             onChange={this.onSearchChange}
             onSubmit={this.onSearchSubmit}
           >
-            Search
+            搜索
           </Search>
         </div>
 
@@ -146,7 +146,7 @@ class App extends Component {
 
         <div className="interactions">
           <Button onClick={() => this.fetchSearchTopStories(searchKey, page + 1)}>
-            More
+            更多
           </Button>
         </div>
       </div>
